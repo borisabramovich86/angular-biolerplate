@@ -2,6 +2,7 @@
 
 var os = require('os');
 var gulp = require('gulp');
+var plugins = require('gulp-load-plugins')();
 var clean = require('gulp-clean');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
@@ -56,7 +57,8 @@ gulp.task('scripts_build', ['angular_cache_build'], function () {
         .pipe(concat('app.min.js'))
         //.pipe(uglify())
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(paths.build_scripts_dir));
+        .pipe(gulp.dest(paths.build_scripts_dir))
+        .pipe(plugins.livereload());
 });
 
 // Concatenate CSS Files
@@ -83,7 +85,8 @@ gulp.task('css_build', ['less'], function () {
         .pipe(sourcemaps.init())
         .pipe(concat('app.min.css'))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('build/css'));
+        .pipe(gulp.dest('build/css'))
+        .pipe(plugins.livereload());
 
 });
 
@@ -184,6 +187,7 @@ gulp.task("open", function () {
         .pipe(open(options));
 });
 
+plugins.livereload.listen();
 gulp.task('watch', ['build'], function () {
     gulp.watch('app/**/*.js', ['scripts_build', 'index_htm_replace']);
     gulp.watch(paths.app_src_html_templates, ['scripts_build']);
@@ -203,7 +207,8 @@ gulp.task('test', function (done) {
 gulp.task('index_htm_replace',['html'], function () {
     return gulp.src(['build/index.htm'])
         .pipe(replace(/XXXXXXXX/g, build_time))
-        .pipe(gulp.dest('build'));
+        .pipe(gulp.dest('build'))
+        .pipe(plugins.livereload());
 });
 
 gulp.task('build', ['scripts_build', 'lib', 'css_build', 'index_htm_replace'], function () {

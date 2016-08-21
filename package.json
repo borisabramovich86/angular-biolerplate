@@ -32,5 +32,9 @@
     "sugar": "^1.4.1",
     "test": "^0.6.0",
     "x-frame-options": "^1.0.0"
+  },
+  "devDependencies": {
+    "gulp-livereload": "^3.8.1",
+    "gulp-load-plugins": "^1.2.4"
   }
 }
